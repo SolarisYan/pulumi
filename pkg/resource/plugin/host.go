@@ -157,6 +157,7 @@ func (host *defaultHost) ServerAddr() string {
 }
 
 func (host *defaultHost) Log(sev diag.Severity, urn resource.URN, msg string, streamID int32) {
+	logging.Infof("defaultHost.Log(urn: \"%v\"): %v", urn, msg)
 	host.ctx.Diag.Logf(sev, diag.StreamMessage(urn, msg, streamID))
 }
 

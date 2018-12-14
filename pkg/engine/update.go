@@ -141,7 +141,12 @@ func update(ctx *Context, info *planContext, opts planOptions, dryRun bool) (Res
 
 	var resourceChanges ResourceChanges
 	if result != nil {
-		defer contract.IgnoreClose(result)
+		defer func() {
+			closeErr := result.Close()
+			if closeErr != nil {
+				logging.Infof("error during shutdown: %v", closeErr)
+			}
+		}()
 
 		// Make the current working directory the same as the program's, and restore it upon exit.
 		done, chErr := result.Chdir()
